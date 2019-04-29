@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/static"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,6 +21,8 @@ func main() {
 	r.Delims("{{", "}}")
 
 	r.LoadHTMLGlob("./templates/*.tmpl.html")
+
+	r.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
 
 	r.GET("/", func(c *gin.Context) {
 		var posts []string
@@ -49,7 +54,18 @@ func main() {
 			return
 		}
 
-		postHTML := template.HTML(blackfriday.MarkdownCommon([]byte(mdfile)))
+		//p := bluemonday.UGCPolicy()
+		//p.AllowAttrs("class").Matching(regexp.MustCompile("^language-[a-zA-Z0-9]+$")).OnElements("code")
+		//html := p.SanitizeBytes(unsafe)
+
+		p := bluemonday.UGCPolicy()
+		p.AllowAttrs("class").Matching(regexp.MustCompile("^language-[a-zA-Z0-9]+$")).OnElements("code")
+
+		unsafe := blackfriday.MarkdownCommon([]byte(mdfile))
+		fmt.Println(string(unsafe))
+		html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+
+		postHTML := template.HTML(html)
 
 		post := Post{Title: postName, Content: postHTML}
 

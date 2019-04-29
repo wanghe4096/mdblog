@@ -37,3 +37,13 @@ $ hexo deploy
 ```
 
 More info: [Deployment](https://hexo.io/docs/deployment.html)
+
+```go
+package main
+import "fmt"
+func main(){
+    fmt.Println("hello world")	
+}
+
+
+```
