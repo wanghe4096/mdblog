@@ -22,7 +22,7 @@ func main() {
 
 	r.LoadHTMLGlob("./templates/*.tmpl.html")
 
-	r.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
+	r.Use(static.Serve("/assets", static.LocalFile("./assets", false)))
 
 	r.GET("/", func(c *gin.Context) {
 		var posts []string
