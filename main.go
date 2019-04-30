@@ -61,7 +61,8 @@ func main() {
 		p := bluemonday.UGCPolicy()
 		p.AllowAttrs("class").Matching(regexp.MustCompile("^language-[a-zA-Z0-9]+$")).OnElements("code")
 
-		unsafe := blackfriday.MarkdownCommon([]byte(mdfile))
+		unsafe := blackfriday.Run([]byte(mdfile))
+		//unsafe := blackfriday.MarkdownCommon([]byte(mdfile))
 		fmt.Println(string(unsafe))
 		html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 
