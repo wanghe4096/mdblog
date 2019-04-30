@@ -76,7 +76,7 @@ func main() {
 		})
 	})
 
-	r.Run()
+	r.Run(":3000")
 }
 
 type Post struct {
