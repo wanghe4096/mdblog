@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-contrib/static"
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
+
+	"github.com/gin-contrib/static"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 
 	"github.com/gin-gonic/gin"
 )
@@ -63,7 +64,6 @@ func main() {
 
 		unsafe := blackfriday.Run([]byte(mdfile))
 		//unsafe := blackfriday.MarkdownCommon([]byte(mdfile))
-		fmt.Println(string(unsafe))
 		html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 
 		postHTML := template.HTML(html)
